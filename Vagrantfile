@@ -41,8 +41,11 @@ Vagrant.configure(2) do |config|
         vb.memory = 512
         vb.cpus = 1
         vb.linked_clone = true
-
-      end # provider
+      end
+      $script = <<-SCRIPT
+      	./redis-5.0.7/src/redis-server ./redis-5.0.7/redis.conf &
+	  SCRIPT
+	  vm_config.vm.provision "shell", inline: $script, privileged: false
     end
   end
 end
