@@ -37,6 +37,17 @@ sudo systemctl daemon-reload
 sudo systemctl restart redis
 ```
 
+## create cluster
+- add password by editing redis.conf
+`requirepass redispass`
+
+- create cluster
+
+```
+vagrant redis1
+redis-cli --cluster create 192.168.10.20:6379 192.168.10.21:6379 192.168.10.22:6379 192.168.10.23:6379 192.168.10.24:6379 192.168.10.25:6379 --cluster-replicas 1 -a redispass
+```
+
 
   
 
