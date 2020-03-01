@@ -1,6 +1,9 @@
 # Vagrant
 .vagrant/
 
+# target
+target/
+
 # Compiled class file
 *.class
 
