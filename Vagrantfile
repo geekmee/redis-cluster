@@ -26,9 +26,9 @@ REDIS_VMS = {
 }
 
 Vagrant.configure(2) do |config|
-  #config.hostmanager.enabled = true
+  config.hostmanager.enabled = true
   config.vm.box = BOX_NAME
-  #config.ssh.insert_key = false
+  config.ssh.insert_key = false
 
   REDIS_VMS.each do |name,cfg|
 
