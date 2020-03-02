@@ -49,6 +49,33 @@ Vagrant.configure(2) do |config|
       chmod +x ./redis-start
       ./redis-5.0.7/src/redis-server ./redis-5.0.7/redis.conf
       echo redis server started
+      echo configuring sentinel...
+      sed -i 's/^sentinel monitor/#&/' ./redis-5.0.7/sentinel.conf
+      sed -i 's/^sentinel down-after-milliseconds/#&/' ./redis-5.0.7/sentinel.conf
+      sed -i 's/^sentinel parallel-syncs/#&/' ./redis-5.0.7/sentinel.conf
+      sed -i 's/^sentinel failover-timeout/#&/' ./redis-5.0.7/sentinel.conf
+      sed -i 's/^daemonize no/daemonize yes/' ./redis-5.0.7/sentinel.conf
+      cat << 'EOL' >> ./redis-5.0.7/sentinel.conf
+		sentinel monitor redis1 192.168.10.20 6379 2
+		sentinel down-after-milliseconds redis1 30000
+		sentinel parallel-syncs redis1 1
+		sentinel failover-timeout redis1 180000
+		
+		sentinel monitor redis2 192.168.10.21 6379 2
+		sentinel down-after-milliseconds redis2 30000
+		sentinel parallel-syncs redis2 1
+		sentinel failover-timeout redis2 180000
+		
+		sentinel monitor redis3 192.168.10.22 6379 2
+		sentinel down-after-milliseconds redis3 30000
+		sentinel parallel-syncs redis3 1
+		sentinel failover-timeout redis3 180000
+		EOL
+	   echo start sentinel...
+	   ./redis-5.0.7/src/redis-sentinel ./redis-5.0.7/sentinel.conf &
+	   
+	   echo sentinel started! 
+      
       SHELL
     end
   end
